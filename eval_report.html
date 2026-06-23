@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>FAQ 分类器评估报告</title><style>
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#1a1a2e;color:#e0e0e0;max-width:800px;margin:0 auto;padding:20px}
+h1{color:#e94560;border-bottom:2px solid #e94560;padding-bottom:8px}
+h2{color:#0f3460}
+.card{background:#16213e;border-radius:12px;padding:16px 20px;margin:16px 0;border:1px solid #0f3460}
+.metric{font-size:28px;font-weight:700;color:#e94560}
+.metric.v2{color:#00b4d8}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.error-item{background:#2a1a3e;padding:8px 12px;margin:6px 0;border-radius:6px;border-left:3px solid #e94560}
+.fixed-item{background:#1a2e1a;padding:8px 12px;margin:6px 0;border-radius:6px;border-left:3px solid #00b4d8}
+.code{font-family:'Cascadia Code','Fira Code',monospace;background:#0d1117;padding:12px;border-radius:8px;overflow-x:auto;font-size:13px;line-height:1.6}
+.lift{font-size:24px;font-weight:700;color:#00e676}
+</style></head><body>
+<h1>📊 FAQ 分类器 — 改进评估报告</h1>
+<div class="grid">
+<div class="card"><h3>V1 原始分类器</h3><div class="metric">83.33%</div><div style="color:#888;margin-top:4px">25/30 正确</div></div>
+<div class="card"><h3>V2 改进分类器</h3><div class="metric v2">100.0%</div><div style="color:#888;margin-top:4px">30/30 正确 ✅</div></div>
+</div>
+<div class="card"><h3>🚀 提升</h3><div class="lift">+16.67%</div></div>
+<h2>❌ V1 错误详情（5 条）</h2>
+<div class="error-item">#10 预测=<b>商品咨询</b> 期望=投诉建议 | 商品质量有问题，我要举报</div>
+<div class="error-item">#15 预测=<b>物流查询</b> 期望=投诉建议 | 建议你们增加夜间配送选项</div>
+<div class="error-item">#20 预测=<b>商品咨询</b> 期望=投诉建议 | 买了三天就坏了，什么破质量</div>
+<div class="error-item">#23 预测=<b>退款退货</b> 期望=投诉建议 | 退货流程太麻烦，搞不懂怎么操作</div>
+<div class="error-item">#24 预测=<b>物流查询</b> 期望=退款退货 | 退款顺便看快递到没到</div>
+<h2>✅ V2 修正</h2>
+<p>以上 5 条 V1 错误在 V2 中均被正确分类。</p>
+<h2>🛠 Code Review: 主要问题</h2>
+<div class="code">🔴 严重 — API Key 硬编码在源码中<br>🔴 严重 — 缺少 System Prompt<br>🟡 高 — 无错误处理/重试机制<br>🟡 高 — 无输出校验<br>🟢 中 — 无日志系统<br>🟢 中 — 无 mock 模式、依赖声明</div>
+<h2>🔧 Prompt 改进</h2>
+<div class="code">- System/User 角色分离<br>- 详细分类定义 + 典型场景<br>- 分类规则（主诉求优先）<br>- 6 条 few-shot 示例<br>- 严格输出约束</div>
+<h2>🛠 工程化改进</h2>
+<div class="code">- 环境变量 API Key + 配置类<br>- 输出标准化（模糊匹配+关键词兜底）<br>- 重试机制（3次指数退避）<br>- Mock 模式<br>- 评估对比脚本</div>
+</body></html>
