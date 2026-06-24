@@ -11,10 +11,9 @@ import openai
 openai.api_key = "sk-proj-abc123def456ghi789jkl012mno345pqr678stu901vwx234"
 MODEL = "gpt-4o-mini"
 
-
 def classify_question(question: str) -> str:
-    """对单条用户问题进行分类"""
-    prompt = f"""你是一个客服分类助手。请对以下用户问题进行分类。
+ """对单条用户问题进行分类"""
+ prompt = f"""你是一个客服分类助手。请对以下用户问题进行分类。
 
 分类类别：退款退货、物流查询、账号问题、商品咨询、投诉建议、其他
 
@@ -22,43 +21,43 @@ def classify_question(question: str) -> str:
 
 请直接回复分类结果，只回复类别名称。"""
 
-    response = openai.chat.completions.create(
-        model=MODEL,
-        messages=[
-            {"role": "user", "content": prompt}
-        ],
-        temperature=0
-    )
+ response = openai.chat.completions.create(
+ model=MODEL,
+ messages=[
+ {"role": "user", "content": prompt}
+ ],
+ temperature=0
+ )
 
-    result = response.choices[0].message.content.strip()
-    return result
+ result = response.choices[0].message.content.strip()
+ return result
 
 
 def batch_classify(input_file: str, output_file: str):
-    """批量分类"""
-    with open(input_file, 'r', encoding='utf-8') as f:
-        questions = json.load(f)
+ """批量分类"""
+ with open(input_file, 'r', encoding='utf-8') as f:
+ questions = json.load(f)
 
-    results = []
-    for item in questions:
-        question = item['question']
-        category = classify_question(question)
-        results.append({
-            'id': item['id'],
-            'question': question,
-            'predicted_category': category
-        })
+ results = []
+ for item in questions:
+ question = item['question']
+ category = classify_question(question)
+ results.append({
+ 'id': item['id'],
+ 'question': question,
+ 'predicted_category': category
+ })
 
-    with open(output_file, 'w', encoding='utf-8') as f:
-        json.dump(results, f, ensure_ascii=False, indent=2)
+ with open(output_file, 'w', encoding='utf-8') as f:
+ json.dump(results, f, ensure_ascii=False, indent=2)
 
-    print(f"分类完成，共处理 {len(results)} 条问题")
+ print(f"分类完成，共处理 {len(results)} 条问题")
 
 
 if __name__ == "__main__":
-    import sys
-    if len(sys.argv) < 3:
-        print("用法: python classifier.py <输入文件> <输出文件>")
-        sys.exit(1)
+ import sys
+ if len(sys.argv) < 3:
+ print("用法: python classifier.py <输入文件> <输出文件>")
+ sys.exit(1)
 
-    batch_classify(sys.argv[1], sys.argv[2])
+ batch_classify(sys.argv[1], sys.argv[2])
