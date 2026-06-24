@@ -26,6 +26,28 @@ faq-classifier-project/
 
 按严重程度排序：
 
+### 🔴 问题 0（严重）：缩进错误导致代码无法执行
+
+```python
+def batch_classify(input_file: str, output_file: str):
+ """批量分类"""
+ with open(input_file, 'r', encoding='utf-8') as f:
+ questions = json.load(f)    # ← 缩进不对！
+
+ results = []                 # ← 缩进不对！
+ for item in questions:
+ question = item['question']  # ← 缩进不对！
+```
+
+**影响**：
+- 整个文件使用了 **1 个空格** 作为缩进单位，而非 Python 标准的 4 个空格
+- `classify_question()` 只有单层级缩进勉强能运行
+- `batch_classify()` 含有 `with`/`for` 嵌套结构，1 个空格无法区分层级，Python 直接报 `IndentationError`，整个批量分类功能完全不可用
+
+**改进**：统一改为 4 空格标准缩进，函数体 4 格，`with`/`for` 内部 8 格。
+
+---
+
 ### 🔴 问题 1（严重）：API Key 硬编码
 
 ```python
